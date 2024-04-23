@@ -9,8 +9,8 @@ class AdifToDataFrame():
     def __init__(self) -> None:
         # set default
         self.column_list = [
-            'CALL', 'MODE', 'BAND', 'FREQ', 'GRIDSQUARE', 'QSO_DATE', 'TIME_ON',
-            'QSO_DATE_OFF', 'TIME_OFF',
+            'CALL', 'MODE', 'BAND', 'FREQ', 'GRIDSQUARE', 'QSO_DATE',
+            'TIME_ON', 'QSO_DATE_OFF', 'TIME_OFF',
             'RST_RCVD', 'RST_SENT', 'STATION_CALLSIGN', 'MY_GRIDSQUARE',
             'COMMENT', 'SUBMODE', 'EQSL_QSL_SENT']
         self.set_default_columns = set(self.column_list)
@@ -62,8 +62,9 @@ class AdifToDataFrame():
                 # イテレータオブジェクト.span()で文字列位置のタプル
                 # イテレータオブジェクト.stringで元の文字列全体
                 for tmp in tmp_iter:
+                    _t = tmp.span()[1]
                     tmp_df.at[str(row_count), tmp.group(1).upper()]\
-                        = tmp.string[tmp.span()[1]:tmp.span()[1]+int(tmp.group(2))]
+                        = tmp.string[_t:_t + int(tmp.group(2))]
                 row_count += 1
 
                 tmp_df = tmp_df.fillna('N/A')
