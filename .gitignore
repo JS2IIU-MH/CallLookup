@@ -1,3 +1,10 @@
+# local items
+backup/
+B4.csv
+test*.py
+test*.adi
+*.code-workspace
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
