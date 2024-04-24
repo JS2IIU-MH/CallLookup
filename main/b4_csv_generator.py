@@ -14,14 +14,16 @@ from adif_to_dataframe import AdifToDataFrame
 
 NOTES_0 = 'B4.csvファイルを作成します'
 NOTES_1 = 'B4callアプリは交信している相手がB4かどうかを表示するために'\
-    'B4.csvファイルを使います。B4.csvファイルはWSJT-XもしくはJTDXが出力する'\
+    'B4.csvファイルを使います。B4.csvファイルはWSJT-XやJTDXなどのアプリが出力する'\
     'ADIFファイル(.adi)を読み込んで生成します。'\
     '生成したB4.csvはB4call.exeと同じフォルダに保存します。'
-NOTES_2 = '読み込ませるADIFファイルを選択してください。'
-FONT_TITLE = ('Meiryo UI', '12', 'bold')
+NOTES_2 = '読み込ませるADIFファイルを選択してください。'\
+    'レコード数が多いと処理に時間がかかります。'
+FONT_TITLE = ('Meiryo UI', '14', 'bold')
 FONT_NOTE = ('Meiryo UI', '10')
 
-MSG_WIDTH = 450
+# 説明文表示領域の横幅
+MSG_WIDTH = 490
 
 
 class Application(tk.Frame):
@@ -64,9 +66,11 @@ class Application(tk.Frame):
         frame2.grid(pady=10)
 
         frame3 = tk.Frame(master)
-        genbtn = tk.Button(frame3, text=' B4.csvを生成する ',
-                           command=self.generate_b4csv)
-        genbtn.grid(row=0, column=0, padx=20)
+        self.genbtn = tk.Button(frame3,
+                                text=' B4.csvを生成する ',
+                                command=self.generate_b4csv,
+                                state='disabled')
+        self.genbtn.grid(row=0, column=0, padx=20)
 
         extbtn = tk.Button(frame3, text=' 終了 ', command=quit)
         extbtn.grid(row=0, column=1)
@@ -81,6 +85,8 @@ class Application(tk.Frame):
         )
         self.label22['text'] = filepath
         self.adi_file = filepath
+
+        self.genbtn['state'] = 'normal'
 
     def generate_b4csv(self):
         # ファイル存在チェック
@@ -109,6 +115,7 @@ class Application(tk.Frame):
             df_call.to_csv(self.csv_file, index=False)
 
         # ボタンを非アクティブ状態にする
+        self.genbtn['state'] = 'disable'
 
 
 def main():
